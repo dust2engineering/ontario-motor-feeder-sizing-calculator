@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ontario Motor Feeder & Disconnect Sizing | Dust 2 Engineering Inc.</title>
+<style>
+:root{color-scheme:dark}
+body{background:#0e1116;color:#e6e9ee;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;padding:24px;line-height:1.55}
+.wrap{max-width:860px;margin:0 auto}
+h1{font-size:1.55rem;line-height:1.25;margin:.2em 0 .1em}
+h2{font-size:1.15rem;margin-top:1.6em;color:#ffd479}
+.sub{color:#9fb0c3;margin:.2em 0 1.2em}
+.card{background:#161b22;border:1px solid #2b333f;border-radius:12px;padding:18px;margin:14px 0}
+label{display:block;margin:.7em 0 .25em;color:#c8d3e0;font-size:.95rem}
+input,select,textarea{width:100%;box-sizing:border-box;background:#0e1116;color:#e6e9ee;border:1px solid #39424f;border-radius:8px;padding:9px;font-size:1rem}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+button{background:#f0a832;color:#14100a;border:0;border-radius:8px;padding:11px 18px;font-size:1rem;font-weight:600;cursor:pointer;margin-top:14px}
+pre{background:#0a0d11;border:1px solid #2b333f;border-radius:10px;padding:14px;white-space:pre-wrap;word-break:break-word;font-size:.92rem}
+table{border-collapse:collapse;width:100%;font-size:.9rem}
+th,td{border:1px solid #2b333f;padding:6px 8px;text-align:left}
+th{background:#1b212b}
+.small{color:#9fb0c3;font-size:.88rem}
+a{color:#7cc4ff}
+.pass{color:#7ee2a0}.fail{color:#ff9c9c}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Ontario Motor Feeder & Disconnect Sizing</h1>
+<p class="sub">CEC Section 28 — Table 44 full-load currents, Table 29 overcurrent percentages, feeder sizing under Rule 28-204.</p>
+<div class="card">
+<h2 style="margin-top:0">Single motor — branch circuit</h2>
+<div class="row"><div><label>Motor size (HP)</label><select id="hp"><option>1</option><option>1.5</option><option>2</option><option>3</option><option>5</option><option>7.5</option><option selected>10</option><option>15</option><option>20</option><option>25</option><option>30</option><option>40</option><option>50</option></select></div>
+<div><label>Rated voltage</label><select id="v"><option>200</option><option>208</option><option>230</option><option>460</option><option selected>575</option></select></div></div>
+<label>Overcurrent device type (Table 29)</label>
+<select id="dev"><option value="300">Non-time-delay fuse — 300%</option><option value="175">Time-delay fuse — 175%</option><option value="250" selected>Inverse-time circuit breaker — 250%</option></select>
+<button onclick="single()">Size branch circuit</button>
+<pre id="out">Pick a motor and click Size.</pre></div>
+<div class="card"><h2>Feeder for a group of motors (Rule 28-204)</h2>
+<label>Motors as HP@volts, comma-separated (all at the same voltage in this quick tool)</label>
+<input id="grp" type="text" value="10@575, 5@575, 5@575">
+<button onclick="feeder()">Size feeder</button>
+<pre id="out2">Feeder conductors: 125% of the largest motor + 100% of the rest. Feeder overcurrent device: largest motor's Table 29 maximum + the other motors' FLCs.</pre></div>
+<div class="card"><h2>Three numbers people mix up</h2>
+<p class="small">Conductors and overcurrent devices are sized from the Table 44 full-load current, never the nameplate. Overload protection is the opposite: nameplate only (125% at service factor ≥ 1.15, else 115% — Rule 28-306). And a Table 29 result that is not a standard size rounds DOWN, not up — the one place in Section 28 where rounding up is not allowed. If the motor will not start on the Table 29 device, Rule 28-200(4) raises the ceilings (NTD fuse 400%, TD fuse 225%, breaker 400% up to 100 A).</p></div>
+<p class="small">Free tool by <b>Dust 2 Engineering Inc.</b>, Mississauga, Ontario — building permit
+drawings for restaurants and small commercial projects across the GTA, stamped by an Ontario P.Eng.
+Flat rate $3,500–$5,000. Questions or a project to discuss: open an issue in this repository.</p>
+</div>
+<script>
+const FLC={"1": {"200": 4.8, "208": 4.6, "230": 4.2, "460": 2.1, "575": 1.7}, "1.5": {"200": 6.9, "208": 6.6, "230": 6.0, "460": 3.0, "575": 2.4}, "2": {"200": 7.8, "208": 7.5, "230": 6.8, "460": 3.4, "575": 2.7}, "3": {"200": 11.0, "208": 10.6, "230": 9.6, "460": 4.8, "575": 3.9}, "5": {"200": 17.5, "208": 16.7, "230": 15.2, "460": 7.6, "575": 6.1}, "7.5": {"200": 25.3, "208": 24.2, "230": 22, "460": 11, "575": 9}, "10": {"200": 32.2, "208": 30.8, "230": 28, "460": 14, "575": 11}, "15": {"200": 48.3, "208": 46.2, "230": 42, "460": 21, "575": 17}, "20": {"200": 62.1, "208": 59.4, "230": 54, "460": 27, "575": 22}, "25": {"200": 78.2, "208": 74.8, "230": 68, "460": 34, "575": 27}, "30": {"200": 92, "208": 88, "230": 80, "460": 40, "575": 32}, "40": {"200": 120, "208": 114, "230": 104, "460": 52, "575": 41}, "50": {"200": 150, "208": 143, "230": 130, "460": 65, "575": 52}}, STD=[15, 20, 25, 30, 35, 40, 45, 50, 60, 70, 80, 90, 100, 110, 125, 150, 175, 200, 225, 250, 300, 350, 400, 450, 500, 600];
+function down(x){ const ok=STD.filter(s=>s<=x); return ok.length? ok[ok.length-1] : 'none'; }
+function up(x){ const ok=STD.filter(s=>s>=x); return ok.length? ok[0] : 'none'; }
+function single(){
+ const hp=document.getElementById('hp').value, v=document.getElementById('v').value, pct=parseInt(document.getElementById('dev').value);
+ const flc=FLC[hp][v]; const mx=flc*pct/100;
+ document.getElementById('out').textContent='Full-load current (Table 44): '+flc+' A\nBranch conductors: min ampacity '+(flc*1.25).toFixed(1)+' A (125% × FLC, Rule 28-106)\nBranch overcurrent device: max '+mx.toFixed(1)+' A ('+pct+'% × FLC, Table 29) → standard size '+down(mx)+' A (round DOWN)\nDisconnect: HP-rated switch ≥ '+hp+' HP, or switch/breaker ≥ '+(flc*1.15).toFixed(1)+' A (115% × FLC) → standard size '+up(flc*1.15)+' A\nOverloads: from the nameplate, not this table (Rule 28-306).';
+}
+function feeder(){
+ const pct=parseInt(document.getElementById('dev').value);
+ const parts=document.getElementById('grp').value.split(',').map(s=>s.trim()).filter(Boolean);
+ const flcs=parts.map(p=>{ const [hp,v]=p.split('@'); return FLC[hp][v]; });
+ const largest=Math.max(...flcs), others=flcs.reduce((a,b)=>a+b,0)-largest;
+ const cond=largest*1.25+others, mx=largest*pct/100+others;
+ document.getElementById('out2').textContent='Motor FLCs: '+flcs.join(', ')+' A\nFeeder conductors: min ampacity '+cond.toFixed(1)+' A\nFeeder overcurrent device: max '+mx.toFixed(1)+' A → standard size '+down(mx)+' A (Rule 28-204)';
+}
+</script>
+</body>
+</html>
