@@ -1,0 +1,140 @@
+{
+ "code": "Canadian Electrical Code (CSA C22.1), Section 28 - Motors and Generators",
+ "full_load_current_table_44_a": {
+  "1": {
+   "200": 4.8,
+   "208": 4.6,
+   "230": 4.2,
+   "460": 2.1,
+   "575": 1.7
+  },
+  "1.5": {
+   "200": 6.9,
+   "208": 6.6,
+   "230": 6.0,
+   "460": 3.0,
+   "575": 2.4
+  },
+  "2": {
+   "200": 7.8,
+   "208": 7.5,
+   "230": 6.8,
+   "460": 3.4,
+   "575": 2.7
+  },
+  "3": {
+   "200": 11.0,
+   "208": 10.6,
+   "230": 9.6,
+   "460": 4.8,
+   "575": 3.9
+  },
+  "5": {
+   "200": 17.5,
+   "208": 16.7,
+   "230": 15.2,
+   "460": 7.6,
+   "575": 6.1
+  },
+  "7.5": {
+   "200": 25.3,
+   "208": 24.2,
+   "230": 22,
+   "460": 11,
+   "575": 9
+  },
+  "10": {
+   "200": 32.2,
+   "208": 30.8,
+   "230": 28,
+   "460": 14,
+   "575": 11
+  },
+  "15": {
+   "200": 48.3,
+   "208": 46.2,
+   "230": 42,
+   "460": 21,
+   "575": 17
+  },
+  "20": {
+   "200": 62.1,
+   "208": 59.4,
+   "230": 54,
+   "460": 27,
+   "575": 22
+  },
+  "25": {
+   "200": 78.2,
+   "208": 74.8,
+   "230": 68,
+   "460": 34,
+   "575": 27
+  },
+  "30": {
+   "200": 92,
+   "208": 88,
+   "230": 80,
+   "460": 40,
+   "575": 32
+  },
+  "40": {
+   "200": 120,
+   "208": 114,
+   "230": 104,
+   "460": 52,
+   "575": 41
+  },
+  "50": {
+   "200": 150,
+   "208": 143,
+   "230": 130,
+   "460": 65,
+   "575": 52
+  }
+ },
+ "voltage_mapping": "Table columns are by RATED motor voltage: 208 V system motors rated 208 V use the 208 column; motors rated 208-220 V use the 230 column per the table notes; 240 V system -> 230 column; 480 V -> 460; 600 V -> 575.",
+ "provenance": "CSA C22.1 is paywalled. These Table 44 values are assembled from manufacturer reproductions (Schneider Electric digest, ABB catalogue, Moeller chart citing CEC Tables 44/45) that agree on every cell of the 1-50 HP subset, with Canadian course-material cross-checks (20 HP at 575 V = 22 A; 25 HP at 575 V = 27 A).",
+ "rules": {
+  "branch_conductors_28_106": "Ampacity not less than 125% of the motor full-load current (Table 44/45 value, not nameplate) for continuous-duty motors.",
+  "branch_ocpd_28_200_table_29": {
+   "non_time_delay_fuse_pct": 300,
+   "time_delay_fuse_pct": 175,
+   "inverse_time_breaker_pct": 250,
+   "rounding": "If the result is not a standard Table 13 rating, select the next SMALLER standard rating (rounding up is not permitted here)."
+  },
+  "starting_relief_28_200_4": "Where the Table 29 device will not let the motor start: non-time-delay fuse up to 400% (fuses up to 600 A) or 300% (601-6000 A); time-delay fuse up to 225%; inverse-time breaker up to 400% (breakers up to 100 A) or 300% (over 100 A).",
+  "overloads_28_306": "Overload protection is sized from the motor NAMEPLATE current: not more than 125% where the service factor is 1.15 or higher, otherwise 115%. (Not from Table 44.)",
+  "feeder_conductors": "Ampacity not less than 125% of the largest motor FLC plus 100% of the sum of all other motor FLCs (Rules 28-106/28-108).",
+  "feeder_ocpd_28_204": "Rating not more than the largest motor's Table 29 maximum plus the sum of the other motors' FLCs (plus other loads at their values).",
+  "disconnect_28_602_28_604": "One of: a motor-circuit switch with a horsepower rating not less than the motor; a moulded-case switch or circuit breaker rated not less than 115% of FLC; or an instantaneous-trip breaker per Rule 28-210."
+ },
+ "standard_ratings_a_used_for_rounding": [
+  15,
+  20,
+  25,
+  30,
+  35,
+  40,
+  45,
+  50,
+  60,
+  70,
+  80,
+  90,
+  100,
+  110,
+  125,
+  150,
+  175,
+  200,
+  225,
+  250,
+  300,
+  350,
+  400,
+  450,
+  500,
+  600
+ ]
+}
