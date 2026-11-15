@@ -1,0 +1,7 @@
+Three motors on one feeder, time-delay fuses:
+
+$ python3 motor_sizing.py --motors 10@575,5@575,5@575 --device td-fuse
+
+Motor FLCs: [11, 6.1, 6.1] A (Table 44)
+Feeder conductors: min ampacity 26.0 A (125% of largest 11 A + 100% of others 12.2 A)
+Feeder overcurrent device: max 31.5 A -> standard size 30 A (Rule 28-204, 175% of largest + sum of others)

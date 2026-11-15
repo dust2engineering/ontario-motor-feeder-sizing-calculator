@@ -1,0 +1,8 @@
+10 HP fan motor at 575 V, inverse-time breaker:
+
+$ python3 motor_sizing.py --hp 10 --volts 575 --device breaker
+
+Full-load current (Table 44): 11 A
+Branch conductors: min ampacity 13.8 A (125% x FLC, Rule 28-106)
+Branch overcurrent device: max 27.5 A (250% x FLC, Table 29) -> standard size 25 A (round DOWN)
+Disconnecting means: HP-rated switch >= 10 HP, or switch/breaker rated >= 12.6 A (115% x FLC) -> standard size 15 A
